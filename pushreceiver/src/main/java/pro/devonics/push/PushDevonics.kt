@@ -17,7 +17,7 @@ import java.util.*
 
 private const val TAG = "PushDevonics"
 
-class PushDevonics(context: Context, appId: String) : LifecycleEventObserver {
+class PushDevonics(context: Context, appId: String) {
 
     private val service = ApiHelper(RetrofitBuilder.apiService)
 
@@ -30,26 +30,13 @@ class PushDevonics(context: Context, appId: String) : LifecycleEventObserver {
         startTime()
     }
 
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        when (event) {
-            Lifecycle.Event.ON_CREATE -> Log.d(TAG, "onCreate: ")
-            Lifecycle.Event.ON_START -> startSession()
-            Lifecycle.Event.ON_RESUME -> Log.d(TAG, "onResume: ")
-            Lifecycle.Event.ON_STOP -> Log.d(TAG, "onStop: ")
-            Lifecycle.Event.ON_DESTROY -> stopSession()//Log.d(TAG, "onDestroy: ")
-        }
-    }
-
     fun sendIntent(intent: Intent) {
 
         if ("transition" == intent.getStringExtra("command")) {
             val bundle = intent.extras
-            //val pushType = bundle?.get("push_type").toString()
-            //val pushId = bundle?.get("push_id").toString()
             val sentPushId = bundle?.get("sent_push_id").toString()
             val pushData = PushData(sentPushId)
             createTransition(pushData)
-            Log.d(TAG, "sendIntent: pushData = $pushData")
         }
     }
 
