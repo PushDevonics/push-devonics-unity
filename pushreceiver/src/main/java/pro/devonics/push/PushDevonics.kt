@@ -72,7 +72,7 @@ class PushDevonics(context: Context, appId: String) {
         return pushCache.getInternalIdFromPref()
     }
 
-    private fun startSession() {
+    fun startSession() {
         Log.d(TAG, "startSession: ")
         val pushCache = PushCache()
         val registrationId = pushCache.getRegistrationIdFromPref()
@@ -83,7 +83,7 @@ class PushDevonics(context: Context, appId: String) {
         }
     }
 
-    private fun stopSession() {
+    fun stopSession() {
         val duration = DataHelper.getDuration()
         val pushCache = PushCache()
         val regId = pushCache.getRegistrationIdFromPref()
