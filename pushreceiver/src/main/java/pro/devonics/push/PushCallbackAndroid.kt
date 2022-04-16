@@ -1,16 +1,13 @@
 package pro.devonics.push
 
 import android.app.Activity
-import com.unity3d.player.UnityPlayer;
 
 class PushCallbackAndroid {
     private var pushDevonics: PushDevonics? = null
-    fun initPush(appId: String?) {
-        val activity: Activity = UnityPlayer.currentActivity
-        pushDevonics = PushDevonics(activity, appId!!)
+    fun initPush(appId: String?, activity: Activity?) {
+        pushDevonics = PushDevonics(activity!!, appId!!)
     }
-    fun onResume() {
-        val activity = UnityPlayer.currentActivity
+    fun onResume(activity: Activity) {
         pushDevonics!!.startSession()
         pushDevonics!!.sendIntent(activity.intent)
     }
