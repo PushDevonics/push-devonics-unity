@@ -72,6 +72,7 @@ class PushDevonics(context: Context, appId: String) {
         return pushCache.getInternalIdFromPref()
     }
 
+    //Be Public
     fun startSession() {
         Log.d(TAG, "startSession: ")
         val pushCache = PushCache()
