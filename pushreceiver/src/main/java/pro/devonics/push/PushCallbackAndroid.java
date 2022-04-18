@@ -7,11 +7,11 @@ public class PushCallbackAndroid {
 
     public static void initPush(String appId, Activity activity) {
         pushDevonics = new PushDevonics(activity, appId);
+        pushDevonics.sendIntent(activity.getIntent());
     }
 
     public static void onResume(Activity activity) {
         pushDevonics.startSession();
-        pushDevonics.sendIntent(activity.getIntent());
     }
 
     public static void onStop() {
