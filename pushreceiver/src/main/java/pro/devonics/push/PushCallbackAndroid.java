@@ -5,9 +5,9 @@ import android.app.Activity;
 public class PushCallbackAndroid {
     private static PushDevonics pushDevonics;
 
-    public static void initPush(String appId, Activity activity) {
+    public static void initPush(String appId, Activity activity, Intent intent) {
         pushDevonics = new PushDevonics(activity, appId);
-        pushDevonics.sendIntent(activity.getIntent());
+        pushDevonics.sendIntent(intent);
     }
 
     public static void onResume(Activity activity) {
