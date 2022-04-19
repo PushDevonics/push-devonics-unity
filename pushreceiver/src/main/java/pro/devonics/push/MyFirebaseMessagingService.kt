@@ -6,6 +6,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
@@ -25,6 +26,10 @@ private const val TAG = "MyFirebaseMessagingService"
 
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
 class MyFirebaseMessagingService : FirebaseMessagingService() {
+    
+    companion object {
+        var sharedPref: SharedPreferences? = null
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("LongLogTag")
@@ -52,6 +57,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     @SuppressLint("LongLogTag", "UnspecifiedImmutableFlag", "ServiceCast")
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         //Log.d(TAG, "onMessageReceived")
+        
+        //FAUST SHARED
+        sharedPref?.edit()?.putString("faust", "Sasha Work!")?.apply();
 
         val packageName = applicationContext.packageName
         val mLauncher = "ic_launcher"
