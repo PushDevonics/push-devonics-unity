@@ -1,6 +1,7 @@
 package pro.devonics.push;
 
 import android.app.Activity;
+import android.content.Intent;
 
 public class PushCallbackAndroid {
     private static PushDevonics pushDevonics;
