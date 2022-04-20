@@ -49,7 +49,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("LongLogTag", "UnspecifiedImmutableFlag", "ServiceCast")
+    @SuppressLint("LongLogTag", "UnspecifiedImmutableFlag", "ServiceCast",
+        "LaunchActivityFromNotification"
+    )
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         //Log.d(TAG, "onMessageReceived")
 
@@ -79,7 +81,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val rnds = (1..1000).random()
 
-        val pendingIntent = PendingIntent.getActivity(
+        val pendingIntent = PendingIntent.getBroadcast(
             this, rnds, intent, PendingIntent.FLAG_ONE_SHOT)
         val channelId = "Default"
 
