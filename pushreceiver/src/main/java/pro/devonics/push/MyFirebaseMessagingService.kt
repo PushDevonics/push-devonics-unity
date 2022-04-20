@@ -68,9 +68,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         //intent?.putExtra("command", "transition")
 
         // Send pushData to intent
-        intent?.putExtra("sent_push_id", remoteMessage.data["sent_push_id"])
-        intent?.putExtra("deeplink", remoteMessage.data["deeplink"]).toString()
-        intent?.putExtra("open_url", remoteMessage.data["open_url"])
+        intent.putExtra("sent_push_id", remoteMessage.data["sent_push_id"])
+        intent.putExtra("deeplink", remoteMessage.data["deeplink"]).toString()
+        intent.putExtra("open_url", remoteMessage.data["open_url"])
 
         val largeIcon = remoteMessage
             .data["image"]?.let { getBitmapFromUrl(it) }
