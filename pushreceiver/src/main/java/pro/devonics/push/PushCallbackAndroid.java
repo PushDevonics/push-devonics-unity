@@ -1,14 +1,13 @@
 package pro.devonics.push;
 
 import android.app.Activity;
-import android.content.Intent;
 
 public class PushCallbackAndroid {
     private static PushDevonics pushDevonics;
 
-    public static void initPush(String appId, Activity activity, Intent intent) {
+    public static void initPush(String appId, Activity activity) {
         pushDevonics = new PushDevonics(activity, appId);
-        pushDevonics.sendIntent(intent);
+        pushDevonics.sendIntent(activity.getIntent());
     }
 
     public static void onResume(Activity activity) {
