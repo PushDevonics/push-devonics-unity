@@ -1,16 +1,17 @@
 package pro.devonics.push;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 
 public class PushCallbackAndroid {
+    @SuppressLint("StaticFieldLeak")
     private static PushDevonics pushDevonics;
 
     public static void initPush(String appId, Activity activity) {
         pushDevonics = new PushDevonics(activity, appId);
-        pushDevonics.sendIntent(activity.getIntent());
     }
 
-    public static void onResume(Activity activity) {
+    public static void onResume() {
         pushDevonics.startSession();
     }
 
