@@ -8,12 +8,12 @@ group = 'com.github.PushDevonics'
 version = '1.0.1'
 
 android {
-    compileSdk 32
-    buildToolsVersion "32.0.0"
+    compileSdk 31
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdk 21
-        targetSdk 32
+        targetSdk 31
         versionCode 1
         versionName "1.0"
 
