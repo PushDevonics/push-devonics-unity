@@ -52,16 +52,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     @SuppressLint("LongLogTag", "UnspecifiedImmutableFlag", "ServiceCast")
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         //Log.d(TAG, "onMessageReceived")
-        
+
+        // get resId
         val packageName = applicationContext.packageName
         val mLauncher = "ic_launcher"
         val resId = resources.getIdentifier(mLauncher, "mipmap", packageName)
         //Log.d(TAG, "onMessageReceived resId: $resId")
         //Log.d(TAG, "onMessageReceived packageName: $packageName")
 
-        val intent = packageManager.getLaunchIntentForPackage(packageName)
-        intent?.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        intent?.putExtra("command", "transition")
+        val intent = Intent(this, MyReceiver::class.java)
+        //val intent = packageManager.getLaunchIntentForPackage(packageName)
+        //intent?.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        //intent?.putExtra("command", "transition")
 
         // Send pushData to intent
         intent?.putExtra("sent_push_id", remoteMessage.data["sent_push_id"])
