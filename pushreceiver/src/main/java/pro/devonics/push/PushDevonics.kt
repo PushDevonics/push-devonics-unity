@@ -63,6 +63,9 @@ class PushDevonics(context: Context, appId: String) {
 
     fun openUrl() {
         val openUrl = helperCache.getOpenUrl()
+        if (openUrl == "") {
+            return
+        }
 
         if (openUrl != null) {
             val urlIntent = Intent()
