@@ -11,7 +11,7 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="pro.devonics.push" />
+                <action android:name="pro.devonics.push.PUSH" />
             </intent-filter>
         </receiver>
 
