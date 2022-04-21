@@ -7,13 +7,13 @@
 
     <application>
         <receiver
-            android:name=".MyReceiver"
+            android:name="pro.devonics.push.MyReceiver"
             android:enabled="true"
             android:exported="true">
         </receiver>
 
         <service
-            android:name=".MyFirebaseMessagingService"
+            android:name="pro.devonics.push.MyFirebaseMessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
