@@ -85,8 +85,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val largeIcon = remoteMessage
             .data["image"]?.let { getBitmapFromUrl(it) }
         //Get icon
-        val smallIcon = remoteMessage
-            .notification?.imageUrl?.let { getBitmapFromUrl(it.toString()) }
+        val smallIcon = remoteMessage.data["icon"]?.let { getBitmapFromUrl(it) }
         //LOG: Get image
         Log.d(TAG, "image: ${remoteMessage.data["image"]}")
         Log.d(TAG, "smallIcon: ${remoteMessage.notification?.imageUrl}")
@@ -97,7 +96,106 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             this, rnds, intent, PendingIntent.FLAG_ONE_SHOT)
         val channelId = "Default"
 
-        if (remoteMessage.data["image"] != null && remoteMessage.notification?.imageUrl == null) {
+        if (remoteMessage.data["image"] != null && remoteMessage.data["icon"] == null) {
+            val builder = NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(resId)
+                .setContentTitle(remoteMessage.notification?.title)
+                .setContentText(remoteMessage.notification?.body)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setAutoCancel(true)
+                .setChannelId(channelId)
+                .setStyle(NotificationCompat.BigPictureStyle()
+                    .bigPicture(largeIcon)
+                    //.bigLargeIcon(largeIcon)
+                )
+                .setContentIntent(pendingIntent)
+
+            val notificationManager = NotificationManagerCompat.from(this)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                    channelId,
+                    "Default channel",
+                    NotificationManager.IMPORTANCE_DEFAULT)
+                notificationManager.createNotificationChannel(channel)
+            }
+            notificationManager.notify(0, builder.build())
+        }
+
+        if (remoteMessage.data["image"] != null && remoteMessage.data["icon"] != null) {
+            val builder = NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(resId)
+                .setContentTitle(remoteMessage.notification?.title)
+                .setContentText(remoteMessage.notification?.body)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setAutoCancel(true)
+                .setChannelId(channelId)
+                .setStyle(NotificationCompat.BigPictureStyle()
+                    .bigPicture(largeIcon)
+                    .bigLargeIcon(smallIcon)
+                )
+                .setContentIntent(pendingIntent)
+
+            val notificationManager = NotificationManagerCompat.from(this)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                    channelId,
+                    "Default channel",
+                    NotificationManager.IMPORTANCE_DEFAULT)
+                notificationManager.createNotificationChannel(channel)
+            }
+            notificationManager.notify(0, builder.build())
+        }
+
+        if (remoteMessage.data["image"] == null && remoteMessage.data["icon"] != null) {
+            val builder = NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(resId)
+                .setContentTitle(remoteMessage.notification?.title)
+                .setContentText(remoteMessage.notification?.body)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setAutoCancel(true)
+                .setChannelId(channelId)
+                .setLargeIcon(smallIcon)
+                .setContentIntent(pendingIntent)
+
+            val notificationManager = NotificationManagerCompat.from(this)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                    channelId,
+                    "Default channel",
+                    NotificationManager.IMPORTANCE_DEFAULT)
+                notificationManager.createNotificationChannel(channel)
+            }
+            notificationManager.notify(0, builder.build())
+        }
+
+        if (remoteMessage.data["image"] == null
+            && remoteMessage.data["icon"] == null) {
+            val builder = NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(resId)
+                .setContentTitle(remoteMessage.notification?.title)
+                .setContentText(remoteMessage.notification?.body)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setAutoCancel(true)
+                .setChannelId(channelId)
+                //.setLargeIcon(icon)
+                .setContentIntent(pendingIntent)
+
+            val notificationManager = NotificationManagerCompat.from(this)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                    channelId,
+                    "Default channel",
+                    NotificationManager.IMPORTANCE_DEFAULT)
+                notificationManager.createNotificationChannel(channel)
+            }
+            notificationManager.notify(0, builder.build())
+        }
+
+        /*if (remoteMessage.data["image"] != null && remoteMessage.notification?.imageUrl == null) {
             val builder = NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(resId)
                 .setContentTitle(remoteMessage.notification?.title)
@@ -197,7 +295,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
                 notificationManager.notify(0, builder.build())
             }
-        }
+        }*/
     }
 
     @SuppressLint("LongLogTag")
