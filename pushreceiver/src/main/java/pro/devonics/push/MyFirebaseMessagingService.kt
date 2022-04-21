@@ -71,6 +71,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         intent.putExtra("sent_push_id", remoteMessage.data["sent_push_id"])
         intent.putExtra("deeplink", remoteMessage.data["deeplink"]).toString()
         intent.putExtra("open_url", remoteMessage.data["open_url"])
+
+        intent.action = "pro.devonics.push"
         // LOG: Send pushData to intent
         Log.d(TAG, "sent_push_id: ${remoteMessage.data["sent_push_id"]}")
         Log.d(TAG, "deeplink: ${remoteMessage.data["deeplink"]}")

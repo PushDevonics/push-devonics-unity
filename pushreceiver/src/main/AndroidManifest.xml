@@ -10,6 +10,9 @@
             android:name="pro.devonics.push.MyReceiver"
             android:enabled="true"
             android:exported="true">
+            <intent-filter>
+                <action android:name="pro.devonics.push" />
+            </intent-filter>
         </receiver>
 
         <service
