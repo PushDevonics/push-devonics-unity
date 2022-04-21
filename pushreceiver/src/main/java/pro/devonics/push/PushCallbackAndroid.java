@@ -26,4 +26,10 @@ public class PushCallbackAndroid {
     public static String getInternalID() {
         return pushDevonics.getInternalId();
     }
+    public static String getDeeplink() {
+        return pushDevonics.getDeeplink();
+    }
+    public static void openPushUrl() {
+        pushDevonics.openUrl();
+    }
 }
