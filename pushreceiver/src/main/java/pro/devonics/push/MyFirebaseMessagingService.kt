@@ -54,6 +54,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     )
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         //Log.d(TAG, "onMessageReceived")
+        Log.d(TAG, "onMessageReceived: remoteMessage.notification = ${remoteMessage.notification?.imageUrl}")
+        Log.d(TAG, "onMessageReceived: remoteMessage.notification = ${remoteMessage.notification?.icon}")
+
+        Log.d(TAG, "onMessageReceived: remoteMessage.data = ${remoteMessage.data}")
 
         val helperCache = HelperCache(applicationContext)
 
