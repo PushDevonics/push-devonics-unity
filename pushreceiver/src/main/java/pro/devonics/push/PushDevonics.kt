@@ -36,37 +36,27 @@ class PushDevonics(context: Context, appId: String) {
 
     private fun sendTransition() {
 
-        //Log.d(TAG, "sendTransition: clicTransition = ${helperCache.getTransitionSt()}")
         val sentPushId = helperCache.getSentPushId()
+        Log.d(TAG, "sendTransition: sentPushId = $sentPushId")
         if (sentPushId == "") {
             return
         }
         val pushData = sentPushId?.let { PushData(it) }
         if (pushData != null) {
             createTransition(pushData)
-            Log.d(TAG, "sendIntent: pushData = $pushData")
+            Log.d(TAG, "sendTransition: pushData = $pushData")
 
         }
         helperCache.saveSentPushId("")
 
     }
 
-    /*fun sendIntent(intent: Intent) {
-
-        if ("transition" == intent.getStringExtra("command")) {
-            val bundle = intent.extras
-            val sentPushId = bundle?.get("sent_push_id").toString()
-            val pushData = PushData(sentPushId)
-            createTransition(pushData)
-        }
-    }*/
-
     fun openUrl() {
         val openUrl = helperCache.getOpenUrl()
         if (openUrl == "") {
             return
         }
-
+        Log.d(TAG, "openUrl: openUrl = $openUrl")
         if (openUrl != null) {
             val urlIntent = Intent()
                 .setAction(Intent.ACTION_VIEW)
@@ -87,6 +77,7 @@ class PushDevonics(context: Context, appId: String) {
 
     fun getDeeplink(): String {
         val deep1 = helperCache.getDeeplink()
+        Log.d(TAG, "getDeeplink: deep1 = $deep1")
         helperCache.saveDeeplink("")
         return deep1.toString()
     }
@@ -98,12 +89,14 @@ class PushDevonics(context: Context, appId: String) {
         if (internalId == null) {
             val uuid = UUID.randomUUID()
             internalId = uuid.toString()
+            Log.d(TAG, "createInternalId: internalId = $internalId")
             pushCache.saveInternalId(internalId)
         }
     }
 
     fun getInternalId(): String? {
         val pushCache = PushCache()
+        Log.d(TAG, "getInternalId: internalId = ${pushCache.getInternalIdFromPref()}")
         return pushCache.getInternalIdFromPref()
     }
 

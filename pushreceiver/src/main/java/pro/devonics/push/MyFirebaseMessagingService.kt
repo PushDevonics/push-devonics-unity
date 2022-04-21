@@ -59,8 +59,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val packageName = applicationContext.packageName
         val mLauncher = "ic_launcher"
         val resId = resources.getIdentifier(mLauncher, "mipmap", packageName)
-        //Log.d(TAG, "onMessageReceived resId: $resId")
-        //Log.d(TAG, "onMessageReceived packageName: $packageName")
+        Log.d(TAG, "onMessageReceived resId: $resId")
+        Log.d(TAG, "onMessageReceived packageName: $packageName")
 
         val intent = Intent(this, MyReceiver::class.java)
         //val intent = packageManager.getLaunchIntentForPackage(packageName)
@@ -71,13 +71,20 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         intent.putExtra("sent_push_id", remoteMessage.data["sent_push_id"])
         intent.putExtra("deeplink", remoteMessage.data["deeplink"]).toString()
         intent.putExtra("open_url", remoteMessage.data["open_url"])
+        // LOG: Send pushData to intent
+        Log.d(TAG, "sent_push_id: ${remoteMessage.data["sent_push_id"]}")
+        Log.d(TAG, "deeplink: ${remoteMessage.data["deeplink"]}")
+        Log.d(TAG, "open_url: ${remoteMessage.data["open_url"]}")
 
+        // Get image
         val largeIcon = remoteMessage
             .data["image"]?.let { getBitmapFromUrl(it) }
-
-        //get icon
+        //Get icon
         val smallIcon = remoteMessage
             .notification?.imageUrl?.let { getBitmapFromUrl(it.toString()) }
+        //LOG: Get image
+        Log.d(TAG, "image: ${remoteMessage.data["image"]}")
+        Log.d(TAG, "smallIcon: ${remoteMessage.notification?.imageUrl}")
 
         val rnds = (1..1000).random()
 

@@ -25,6 +25,9 @@ class MyReceiver : BroadcastReceiver() {
         val sentPushId = bundle?.get("sent_push_id").toString()
         val openUrl = bundle?.get("open_url").toString()
         val deeplink = bundle?.get("deeplink").toString()
+        Log.d(TAG, "onReceive: sentPushId $sentPushId")
+        Log.d(TAG, "onReceive: openUrl $openUrl")
+        Log.d(TAG, "onReceive: deeplink $deeplink")
 
         // Save to preferences
         helperCache.saveSentPushId(sentPushId)
