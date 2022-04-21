@@ -55,6 +55,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         //Log.d(TAG, "onMessageReceived")
 
+        val helperCache = HelperCache(applicationContext)
+
+        val sentPushId = remoteMessage.data["sent_push_id"].toString()
+        val deeplink = remoteMessage.data["deeplink"].toString()
+        val openUrl = remoteMessage.data["open_url"].toString()
+        helperCache.saveSentPushId(sentPushId)
+        helperCache.saveDeeplink(deeplink)
+        helperCache.saveOpenUrl(openUrl)
+        Log.d(TAG, "onMessageReceived sentPushId: $sentPushId")
+        Log.d(TAG, "onMessageReceived deeplink: $deeplink")
+        Log.d(TAG, "onMessageReceived openUrl: $openUrl")
+
         // get resId
         val packageName = applicationContext.packageName
         val mLauncher = "ic_launcher"

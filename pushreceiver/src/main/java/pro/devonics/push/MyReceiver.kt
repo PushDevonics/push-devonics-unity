@@ -30,9 +30,9 @@ class MyReceiver : BroadcastReceiver() {
         Log.d(TAG, "onReceive: deeplink $deeplink")
 
         // Save to preferences
-        helperCache.saveSentPushId(sentPushId)
-        helperCache.saveOpenUrl(openUrl)
-        helperCache.saveDeeplink(deeplink)
+        //helperCache.saveSentPushId(sentPushId)
+        //helperCache.saveOpenUrl(openUrl)
+        //helperCache.saveDeeplink(deeplink)
 
         if (mIntent != null) {
             startActivity(context, mIntent)
