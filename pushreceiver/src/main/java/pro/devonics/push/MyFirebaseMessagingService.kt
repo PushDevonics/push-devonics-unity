@@ -196,8 +196,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
+    @SuppressLint("LongLogTag")
     private fun getBitmapFromUrl(imageUrl: String): Bitmap {
         val url = URL(imageUrl)
+        Log.d(TAG, "getBitmapFromUrl: url = $url")
         val connection = url.openConnection() as HttpURLConnection
         connection.doInput = true
         connection.connect()
