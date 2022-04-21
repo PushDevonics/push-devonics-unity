@@ -38,15 +38,13 @@ class PushDevonics(context: Context, appId: String) {
 
         val sentPushId = helperCache.getSentPushId()
         Log.d(TAG, "sendTransition: sentPushId = $sentPushId")
-        if (sentPushId == "") {
+        if (sentPushId == "" || sentPushId == null) {
             return
         }
-        val pushData = sentPushId?.let { PushData(it) }
-        if (pushData != null) {
-            createTransition(pushData)
-            Log.d(TAG, "sendTransition: pushData = $pushData")
+        val pushData = PushData(sentPushId)
+        createTransition(pushData)
+        Log.d(TAG, "sendTransition: pushData = $pushData")
 
-        }
         helperCache.saveSentPushId("")
 
     }

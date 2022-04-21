@@ -74,21 +74,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         Log.d(TAG, "onMessageReceived resId: $resId")
         Log.d(TAG, "onMessageReceived packageName: $packageName")
 
-        val intent = Intent(this, MyReceiver::class.java)
-        //val intent = packageManager.getLaunchIntentForPackage(packageName)
-        //intent?.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        //intent?.putExtra("command", "transition")
-
-        // Send pushData to intent
-        intent.putExtra("sent_push_id", remoteMessage.data["sent_push_id"])
-        intent.putExtra("deeplink", remoteMessage.data["deeplink"]).toString()
-        intent.putExtra("open_url", remoteMessage.data["open_url"])
-
-        intent.action = "pro.devonics.push.PUSH"
-        // LOG: Send pushData to intent
-        Log.d(TAG, "sent_push_id: ${remoteMessage.data["sent_push_id"]}")
-        Log.d(TAG, "deeplink: ${remoteMessage.data["deeplink"]}")
-        Log.d(TAG, "open_url: ${remoteMessage.data["open_url"]}")
+        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        intent?.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
 
         // Get image
         val largeIcon = remoteMessage
@@ -102,7 +89,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val rnds = (1..1000).random()
 
-        val pendingIntent = PendingIntent.getBroadcast(
+        val pendingIntent = PendingIntent.getActivity(
             this, rnds, intent, PendingIntent.FLAG_ONE_SHOT)
         val channelId = "Default"
 

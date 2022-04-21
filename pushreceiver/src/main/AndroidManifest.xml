@@ -6,15 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application>
-        <receiver
-            android:name="pro.devonics.push.MyReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="pro.devonics.push.PUSH" />
-            </intent-filter>
-        </receiver>
-
         <service
             android:name="pro.devonics.push.MyFirebaseMessagingService"
             android:exported="false">
