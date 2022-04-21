@@ -75,8 +75,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val packageName = applicationContext.packageName
         val mLauncher = "ic_launcher"
         val resId = resources.getIdentifier(mLauncher, "mipmap", packageName)
-        Log.d(TAG, "onMessageReceived resId: $resId")
-        Log.d(TAG, "onMessageReceived packageName: $packageName")
+        //Log.d(TAG, "onMessageReceived resId: $resId")
+        //Log.d(TAG, "onMessageReceived packageName: $packageName")
 
         val intent = packageManager.getLaunchIntentForPackage(packageName)
         intent?.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
