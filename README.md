@@ -3,6 +3,8 @@
 # push-devonics-unity
 Push Devonics Unity Plugin
 
+Attention to use this library, you must update the SDK to version 33
+
 Java:
 
 MainActivity:

@@ -95,8 +95,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val rnds = (1..1000).random()
 
-        val pendingIntent = PendingIntent.getActivity(
-            this, rnds, intent, PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(
+                this, rnds, intent, PendingIntent.FLAG_IMMUTABLE)
+        } else {
+            PendingIntent.getActivity(
+                this, rnds, intent, PendingIntent.FLAG_ONE_SHOT)
+        }
+
         val channelId = "Default"
 
         if (remoteMessage.notification?.imageUrl != null && remoteMessage.notification?.icon == null) {
