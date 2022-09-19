@@ -44,13 +44,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             }
         } catch (e: Exception) {
             super.handleIntent(intent)//if app close
-            //Log.d(TAG, "handleIntent e: $e")
+            Log.d(TAG, "handleIntent e: $e")
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("LongLogTag", "UnspecifiedImmutableFlag", "ServiceCast",
-        "LaunchActivityFromNotification"
+        "LaunchActivityFromNotification", "DiscouragedApi"
     )
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         //Log.d(TAG, "onMessageReceived")
@@ -63,10 +63,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val sentPushId = remoteMessage.data["sent_push_id"].toString()
         val deeplink = remoteMessage.data["deeplink"].toString()
-        val openUrl = remoteMessage.data["open_url"].toString()
+        val openUrl = remoteMessage.data["open_url"]
         helperCache.saveSentPushId(sentPushId)
         helperCache.saveDeeplink(deeplink)
-        helperCache.saveOpenUrl(openUrl)
+        if (openUrl != null) {
+            helperCache.saveOpenUrl(openUrl)
+        }
         Log.d(TAG, "onMessageReceived sentPushId: $sentPushId")
         Log.d(TAG, "onMessageReceived deeplink: $deeplink")
         Log.d(TAG, "onMessageReceived openUrl: $openUrl")
@@ -79,16 +81,22 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         //Log.d(TAG, "onMessageReceived packageName: $packageName")
 
         val intent = packageManager.getLaunchIntentForPackage(packageName)
-        intent?.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        //intent?.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        intent?.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+        // Send pushData to intent
+        intent?.putExtra("sent_push_id", remoteMessage.data["sent_push_id"])
+        intent?.putExtra("deeplink", remoteMessage.data["deeplink"]).toString()
+        intent?.putExtra("open_url", remoteMessage.data["open_url"])
 
         // Get image
-        val largeIcon = remoteMessage
-            .notification?.imageUrl.let { getBitmapFromUrl(it.toString()) }
-        val smallIcon = remoteMessage.notification?.icon.let { getBitmapFromUrl(it.toString()) }
         /*val largeIcon = remoteMessage
-            .data["image"]?.let { getBitmapFromUrl(it) }*/
+            .notification?.imageUrl.let { getBitmapFromUrl(it.toString()) }
+        val smallIcon = remoteMessage.notification?.icon.let { getBitmapFromUrl(it) }*/
+        val largeIcon = remoteMessage
+            .data["image"]?.let { getBitmapFromUrl(it) }
         //Get icon
-        //val smallIcon = remoteMessage.data["icon"]?.let { getBitmapFromUrl(it) }
+        val smallIcon = remoteMessage.data["icon"]?.let { getBitmapFromUrl(it) }
         //LOG: Get image
         Log.d(TAG, "image: ${remoteMessage.data["image"]}")
         Log.d(TAG, "smallIcon: ${remoteMessage.notification?.imageUrl}")
@@ -97,7 +105,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.getActivity(
-                this, rnds, intent, PendingIntent.FLAG_IMMUTABLE)
+                this, rnds, intent, PendingIntent.FLAG_MUTABLE)
         } else {
             PendingIntent.getActivity(
                 this, rnds, intent, PendingIntent.FLAG_ONE_SHOT)
@@ -310,7 +318,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     @SuppressLint("LongLogTag")
-    private fun getBitmapFromUrl(imageUrl: String): Bitmap {
+    private fun getBitmapFromUrl(imageUrl: String?): Bitmap {
         val url = URL(imageUrl)
         Log.d(TAG, "getBitmapFromUrl: url = $url")
         val connection = url.openConnection() as HttpURLConnection
@@ -318,6 +326,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         connection.connect()
         val input = connection.inputStream
         return BitmapFactory.decodeStream(input)
+
     }
 
     @SuppressLint("LongLogTag")

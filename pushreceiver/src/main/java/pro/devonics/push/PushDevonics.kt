@@ -43,6 +43,8 @@ class PushDevonics(activity: Activity, appId: String) {
             if (ContextCompat.checkSelfPermission(myContext, Manifest.permission.POST_NOTIFICATIONS) ==
                 PackageManager.PERMISSION_GRANTED
             ) {
+                Log.v(TAG, "askNotificationPermission: PERMISSION_GRANTED")
+
                 // FCM SDK (and your app) can post notifications.
             } else if (ActivityCompat.shouldShowRequestPermissionRationale(
                     myContext,
@@ -82,13 +84,16 @@ class PushDevonics(activity: Activity, appId: String) {
         if (openUrl == "") {
             return
         }
-        Log.d(TAG, "openUrl: openUrl = $openUrl")
+
+        Log.v(TAG, "openUrl: openUrl = $openUrl")
         if (openUrl != null) {
+
             val urlIntent = Intent()
                 .setAction(Intent.ACTION_VIEW)
                 .addCategory(Intent.CATEGORY_BROWSABLE)
                 .setData(Uri.parse(openUrl))
 
+            Log.d(TAG, "openUrl: Uri.parse = ${Uri.parse(openUrl)}")
             urlIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             try {
                 myContext.startActivity(urlIntent)
