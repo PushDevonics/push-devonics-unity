@@ -3,30 +3,28 @@
 # push-devonics-unity
 Push Devonics Unity Plugin
 
-Attention to use this library, you must update the SDK to version 33
+Attention to use this library, you must update the Target Android SDK to version 33
 
-Java:
+Download and Import push-devonyx.unitypackage into you Unity Project.
 
-MainActivity:
+Initialization:
 
-    private PushDevonics pushDevonics;
+using DevonicsPush;
 
-MainActivity in onCreate():
+```csharp
+public class YouClass : MonoBehaviour
+{
+    void Awake()
+    {
+        PushDevonics.InitPush("YOU-APP-PUSH-KEY");
+    }
+}
+```
 
-    pushDevonics = new PushDevonics(getApplicationContext(), "appId");
-        
-    // If you need internalId
-    String internalId = pushDevonics.getInternalId();
-    
-    // If you want add tag type String
-    pushDevonics.setTags("key", "value");
-    
-    // If you need deeplink
-    String deeplink = pushDevonics.getDeeplink();
-    
-    // If you need open URL in browser
-    pushDevonics.openUrl();
+If you need Open Url From Push:
 
-MainActivity in onStop():
+PushDevonics.OpenPushUrl();
 
-    pushDevonics.stopSession();
+If you need Internal Push User ID:
+
+string id = PushDevonics.GetInternalID();
