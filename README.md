@@ -23,8 +23,12 @@ public class YouClass : MonoBehaviour
 
 If you need Open Url From Push:
 
+```csharp
 PushDevonics.OpenPushUrl();
+```
 
 If you need Internal Push User ID:
 
+```csharp
 string id = PushDevonics.GetInternalID();
+```
