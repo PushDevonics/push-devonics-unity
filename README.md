@@ -5,7 +5,7 @@ Push Devonics Unity Plugin
 
 Attention to use this library, you must update the Target Android SDK to version 33
 
-Download and Import push-devonyx.unitypackage into you Unity Project.
+Download and Import **push-devonyx.unitypackage** into you Unity Project.
 
 Initialization:
 
