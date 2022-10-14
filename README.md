@@ -32,3 +32,19 @@ If you need Internal Push User ID:
 ```csharp
 string id = PushDevonics.GetInternalID();
 ```
+
+If you need Session Time on statistics:
+
+```csharp
+void OnApplicationPause(bool pauseStatus)
+{
+    if (pauseStatus)
+    {
+        PushDevonics.OnStop();
+    }
+}
+void OnApplicationQuit()
+{
+    PushDevonics.OnStop();
+}
+```
