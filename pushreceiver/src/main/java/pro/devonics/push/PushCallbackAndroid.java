@@ -12,8 +12,12 @@ public class PushCallbackAndroid {
     }
 
     public static void onResume() {
-        pushDevonics.startSession();
+        pushDevonics.checkPermission();
     }
+
+    /*public static void onResume() {
+        pushDevonics.startSession();
+    }*/
 
     public static void onStop() {
         pushDevonics.stopSession();

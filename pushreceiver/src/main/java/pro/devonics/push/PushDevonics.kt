@@ -26,18 +26,61 @@ class PushDevonics(activity: Activity, appId: String) {
     private val service = ApiHelper(RetrofitBuilder.apiService)
     private val myContext = activity
     private val helperCache = HelperCache(activity)
+    private val mAppId = appId
+    private val mActivity = activity
 
     init {
         AppContextKeeper.setContext(activity)
-        PushInitialization.run(appId)
         createInternalId()
-        startTime()
-        startSession()
-        sendTransition(service)
-        askNotificationPermission()
     }
 
-    private fun askNotificationPermission() {
+    fun checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                // allow permission
+                PushInitialization.run(mAppId)
+                startTime()
+                startSession()
+                sendTransition(service)
+                Log.d(TAG, "Allow permission")
+                // FCM SDK (and your app) can post notifications.
+            } else if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    mActivity,
+                    Manifest.permission.POST_NOTIFICATIONS
+                )
+            ) {
+                // permission denied
+                Log.d(TAG, "Permission denied")
+            } else {
+                // ask permission
+                Log.d(TAG, "Ask permission")
+                mActivity.requestPermissions(
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    PERMISSIONS_REQUEST_CODE
+                )
+                if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.POST_NOTIFICATIONS) ==
+                    PackageManager.PERMISSION_GRANTED
+                ) {
+                    Log.d(TAG, "Create user")
+                    PushInitialization.run(mAppId)
+                    startTime()
+                    startSession()
+                    sendTransition(service)
+                }
+            }
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            Log.d(TAG, "Ask permission for API < TIRAMISU")
+            PushInitialization.run(mAppId)
+            startTime()
+            startSession()
+            sendTransition(service)
+        }
+    }
+
+    /*private fun askNotificationPermission() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(myContext, Manifest.permission.POST_NOTIFICATIONS) ==
@@ -60,7 +103,7 @@ class PushDevonics(activity: Activity, appId: String) {
             }
 
         }
-    }
+    }*/
 
     private fun sendTransition(service: ApiHelper) {
 
@@ -123,6 +166,8 @@ class PushDevonics(activity: Activity, appId: String) {
             Log.d(TAG, "createInternalId: internalId = $internalId")
             pushCache.saveInternalId(internalId)
         }
+
+        //checkPermission(appId, activity)
     }
 
     fun getInternalId(): String? {
@@ -137,7 +182,7 @@ class PushDevonics(activity: Activity, appId: String) {
         val pushCache = PushCache()
         val registrationId = pushCache.getRegistrationIdFromPref()
         if (pushCache.getSubscribeStatusFromPref() == true) {
-            val session = registrationId?.let { service.createSession(it) }
+            registrationId?.let { service.createSession(it) }
             //Log.d(TAG, "subscribeStatus = ${pushCache.getSubscribeStatusFromPref()}")
 
         }
