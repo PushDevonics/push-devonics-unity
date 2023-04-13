@@ -336,6 +336,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val pushCache = PushCache()
 
         service.updateRegistrationId(p0)
-        pushCache.saveRegistrationIdPref(p0)
+        pushCache.saveRegistrationId(p0)
     }
 }

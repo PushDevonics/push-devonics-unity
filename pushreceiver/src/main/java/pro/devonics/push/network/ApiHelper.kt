@@ -36,7 +36,7 @@ class ApiHelper(private val apiService: ApiService) {
                     val pushCache = PushCache()
                     if (response.isSuccessful) {
                         pushCache.saveSubscribeStatus(true)
-                        val registrationId = pushCache.getRegistrationIdFromPref()
+                        val registrationId = pushCache.getRegistrationId()
                         if (registrationId != null) {
                             createSession(registrationId)
                         }

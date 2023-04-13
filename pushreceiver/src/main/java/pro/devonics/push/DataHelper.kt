@@ -1,10 +1,5 @@
 package pro.devonics.push
 
-import pro.devonics.push.model.PushData
-import pro.devonics.push.model.Tag
-import pro.devonics.push.model.TimeData
-import pro.devonics.push.network.ApiHelper
-import pro.devonics.push.network.RetrofitBuilder
 import java.util.*
 
 private const val TAG = "Repository"
@@ -17,7 +12,7 @@ class DataHelper {
         private var stopTime: Long = 0
 
         private val cache = PushCache()
-        val registrationId = cache.getRegistrationIdFromPref()
+        val registrationId = cache.getRegistrationId()
 
         fun getDuration(): Long {
             val date = Calendar.getInstance().timeInMillis

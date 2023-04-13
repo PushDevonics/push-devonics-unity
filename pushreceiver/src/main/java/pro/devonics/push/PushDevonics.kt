@@ -40,7 +40,7 @@ class PushDevonics(activity: Activity, appId: String) {
                 PackageManager.PERMISSION_GRANTED
             ) {
                 // allow permission
-                PushInitialization.run(mAppId)
+                PushInit.run(mAppId, service)
                 startTime()
                 startSession()
                 sendTransition(service)
@@ -64,7 +64,7 @@ class PushDevonics(activity: Activity, appId: String) {
                     PackageManager.PERMISSION_GRANTED
                 ) {
                     Log.d(TAG, "Create user")
-                    PushInitialization.run(mAppId)
+                    PushInit.run(mAppId, service)
                     startTime()
                     startSession()
                     sendTransition(service)
@@ -73,7 +73,7 @@ class PushDevonics(activity: Activity, appId: String) {
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             Log.d(TAG, "Ask permission for API < TIRAMISU")
-            PushInitialization.run(mAppId)
+            PushInit.run(mAppId, service)
             startTime()
             startSession()
             sendTransition(service)
@@ -109,7 +109,7 @@ class PushDevonics(activity: Activity, appId: String) {
 
         val sentPushId = helperCache.getSentPushId()
         val pushCache = PushCache()
-        val registrationId = pushCache.getRegistrationIdFromPref()
+        val registrationId = pushCache.getRegistrationId()
         if (sentPushId != "" || sentPushId != null) {
             val pushData = sentPushId?.let { PushData(it) }
             if (pushData != null) {
@@ -159,7 +159,7 @@ class PushDevonics(activity: Activity, appId: String) {
     private fun createInternalId() {
         val pushCache = PushCache()
 
-        var internalId = pushCache.getInternalIdFromPref()
+        var internalId = pushCache.getInternalId()
         if (internalId == null) {
             val uuid = UUID.randomUUID()
             internalId = uuid.toString()
@@ -172,16 +172,16 @@ class PushDevonics(activity: Activity, appId: String) {
 
     fun getInternalId(): String? {
         val pushCache = PushCache()
-        Log.d(TAG, "getInternalId: internalId = ${pushCache.getInternalIdFromPref()}")
-        return pushCache.getInternalIdFromPref()
+        Log.d(TAG, "getInternalId: internalId = ${pushCache.getInternalId()}")
+        return pushCache.getInternalId()
     }
 
     //Be Public
     fun startSession() {
         Log.d(TAG, "startSession: ")
         val pushCache = PushCache()
-        val registrationId = pushCache.getRegistrationIdFromPref()
-        if (pushCache.getSubscribeStatusFromPref() == true) {
+        val registrationId = pushCache.getRegistrationId()
+        if (pushCache.getSubscribeStatus() == true) {
             registrationId?.let { service.createSession(it) }
             //Log.d(TAG, "subscribeStatus = ${pushCache.getSubscribeStatusFromPref()}")
 
@@ -191,7 +191,7 @@ class PushDevonics(activity: Activity, appId: String) {
     fun stopSession() {
         val duration = DataHelper.getDuration()
         val pushCache = PushCache()
-        val regId = pushCache.getRegistrationIdFromPref()
+        val regId = pushCache.getRegistrationId()
         if (regId != null) {
             val timeData = TimeData(duration)
             service.sendTimeStatistic(regId, timeData)
