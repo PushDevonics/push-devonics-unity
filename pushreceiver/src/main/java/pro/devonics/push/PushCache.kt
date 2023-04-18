@@ -7,9 +7,7 @@ private const val TAG = "PushCache"
 class PushCache {
 
     private val PUSH_CACHE = "push_cache"
-    //private val OLD_REGISTRATION_ID = "old_registration_id"
     private val REGISTRATION_ID = "registration_id"
-    //private val REGISTRATION_STATUS = "registration_status"
     private val SUBSCRIBE_STATUS = "subscribe_status"
     private val INTERNAL_ID = "internal_id"
     private val TAG_KEY = "tag_key"
@@ -55,7 +53,6 @@ class PushCache {
 
     fun saveRegistrationId(reg_id: String) {
         ed?.putString(REGISTRATION_ID, reg_id)
-        //Log.d(TAG, "saveRegistrationIdPref: reg_id = $reg_id")
         ed?.apply()
     }
 

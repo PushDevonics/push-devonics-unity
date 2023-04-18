@@ -44,7 +44,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             }
         } catch (e: Exception) {
             super.handleIntent(intent)//if app close
-            Log.d(TAG, "handleIntent e: $e")
+            //Log.d(TAG, "handleIntent e: $e")
         }
     }
 
@@ -54,10 +54,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     )
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         //Log.d(TAG, "onMessageReceived")
-        Log.d(TAG, "onMessageReceived: remoteMessage.notification = ${remoteMessage.notification?.imageUrl}")
-        Log.d(TAG, "onMessageReceived: remoteMessage.notification = ${remoteMessage.notification?.icon}")
+        //Log.d(TAG, "onMessageReceived: remoteMessage.notification = ${remoteMessage.notification?.imageUrl}")
+        //Log.d(TAG, "onMessageReceived: remoteMessage.notification = ${remoteMessage.notification?.icon}")
 
-        Log.d(TAG, "onMessageReceived: remoteMessage.data = ${remoteMessage.data}")
+        //Log.d(TAG, "onMessageReceived: remoteMessage.data = ${remoteMessage.data}")
 
         val helperCache = HelperCache(applicationContext)
 
@@ -69,9 +69,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if (openUrl != null) {
             helperCache.saveOpenUrl(openUrl)
         }
-        Log.d(TAG, "onMessageReceived sentPushId: $sentPushId")
-        Log.d(TAG, "onMessageReceived deeplink: $deeplink")
-        Log.d(TAG, "onMessageReceived openUrl: $openUrl")
+        //Log.d(TAG, "onMessageReceived sentPushId: $sentPushId")
+        //Log.d(TAG, "onMessageReceived deeplink: $deeplink")
+        //Log.d(TAG, "onMessageReceived openUrl: $openUrl")
 
         // get resId
         val packageName = applicationContext.packageName
@@ -90,16 +90,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         intent?.putExtra("open_url", remoteMessage.data["open_url"])
 
         // Get image
-        /*val largeIcon = remoteMessage
-            .notification?.imageUrl.let { getBitmapFromUrl(it.toString()) }
-        val smallIcon = remoteMessage.notification?.icon.let { getBitmapFromUrl(it) }*/
         val largeIcon = remoteMessage
             .data["image"]?.let { getBitmapFromUrl(it) }
         //Get icon
         val smallIcon = remoteMessage.data["icon"]?.let { getBitmapFromUrl(it) }
         //LOG: Get image
-        Log.d(TAG, "image: ${remoteMessage.data["image"]}")
-        Log.d(TAG, "smallIcon: ${remoteMessage.notification?.imageUrl}")
+        //Log.d(TAG, "image: ${remoteMessage.data["image"]}")
+        //Log.d(TAG, "smallIcon: ${remoteMessage.notification?.imageUrl}")
 
         val rnds = (1..1000).random()
 
@@ -213,114 +210,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             }
             notificationManager.notify(0, builder.build())
         }
-
-        /*if (remoteMessage.data["image"] != null && remoteMessage.notification?.imageUrl == null) {
-            val builder = NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(resId)
-                .setContentTitle(remoteMessage.notification?.title)
-                .setContentText(remoteMessage.notification?.body)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setAutoCancel(true)
-                .setChannelId(channelId)
-                .setStyle(NotificationCompat.BigPictureStyle()
-                    .bigPicture(largeIcon)
-                )
-                .setContentIntent(pendingIntent)
-
-            val notificationManager = NotificationManagerCompat.from(this)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channel = NotificationChannel(
-                    channelId,
-                    "Default channel",
-                    NotificationManager.IMPORTANCE_DEFAULT)
-                notificationManager.createNotificationChannel(channel)
-            }
-            notificationManager.notify(0, builder.build())
-        }
-
-        if (remoteMessage.data["image"] != null && remoteMessage.notification?.imageUrl != null) {
-
-            val builder = NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(resId)
-                .setContentTitle(remoteMessage.notification?.title)
-                .setContentText(remoteMessage.notification?.body)
-                .setLargeIcon(smallIcon)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setAutoCancel(true)
-                .setChannelId(channelId)
-                .setStyle(NotificationCompat.BigPictureStyle()
-                    .bigPicture(largeIcon)
-                    .bigLargeIcon(smallIcon)
-                )
-                .setContentIntent(pendingIntent)
-
-            val notificationManager = NotificationManagerCompat.from(this)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channel = NotificationChannel(
-                    channelId,
-                    "Default channel",
-                    NotificationManager.IMPORTANCE_DEFAULT)
-                notificationManager.createNotificationChannel(channel)
-            }
-            notificationManager.notify(0, builder.build())
-        }
-
-        if (remoteMessage.data["image"] == null && remoteMessage.notification?.imageUrl != null) {
-            remoteMessage.notification?.let {
-                val builder = NotificationCompat.Builder(this, channelId)
-                    .setSmallIcon(resId)
-                    .setContentTitle(remoteMessage.notification?.title)
-                    .setContentText(remoteMessage.notification?.body)
-                    .setLargeIcon(smallIcon)
-                    .setDefaults(Notification.DEFAULT_ALL)
-                    .setAutoCancel(true)
-                    .setChannelId(channelId)
-                    .setContentIntent(pendingIntent)
-
-                val notificationManager = NotificationManagerCompat.from(this)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    val channel = NotificationChannel(
-                        channelId,
-                        "Default channel",
-                        NotificationManager.IMPORTANCE_DEFAULT)
-                    notificationManager.createNotificationChannel(channel)
-                }
-                notificationManager.notify(0, builder.build())
-            }
-        }
-
-        if (remoteMessage.data["image"] == null
-            && remoteMessage.notification?.imageUrl == null
-            && remoteMessage.notification != null) {
-
-            remoteMessage.notification?.let {
-                val builder = NotificationCompat.Builder(this, channelId)
-                    .setSmallIcon(resId)
-                    .setContentTitle(remoteMessage.notification?.title)
-                    .setContentText(remoteMessage.notification?.body)
-                    //.setLargeIcon(smallIcon)
-                    .setDefaults(Notification.DEFAULT_ALL)
-                    .setAutoCancel(true)
-                    .setChannelId(channelId)
-                    .setContentIntent(pendingIntent)
-
-                val notificationManager = NotificationManagerCompat.from(this)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    val channel = NotificationChannel(
-                        channelId,
-                        "Default channel",
-                        NotificationManager.IMPORTANCE_DEFAULT)
-                    notificationManager.createNotificationChannel(channel)
-                }
-                notificationManager.notify(0, builder.build())
-            }
-        }*/
     }
 
     @SuppressLint("LongLogTag")
     private fun getBitmapFromUrl(imageUrl: String?): Bitmap {
         val url = URL(imageUrl)
-        Log.d(TAG, "getBitmapFromUrl: url = $url")
+        //Log.d(TAG, "getBitmapFromUrl: url = $url")
         val connection = url.openConnection() as HttpURLConnection
         connection.doInput = true
         connection.connect()
@@ -331,7 +226,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     @SuppressLint("LongLogTag")
     override fun onNewToken(p0: String) {
-        Log.d(TAG, "Refreshed token: $p0")
+        //Log.d(TAG, "Refreshed token: $p0")
         val service = ApiHelper(RetrofitBuilder.apiService)
         val pushCache = PushCache()
 

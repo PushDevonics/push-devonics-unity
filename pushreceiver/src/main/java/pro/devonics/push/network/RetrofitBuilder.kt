@@ -11,10 +11,7 @@ object RetrofitBuilder {
 
     private val baseUrl = Base64.decode(BASE_URL, 8).decodeToString()
 
-    private val loggingInterceptor: HttpLoggingInterceptor =
-        HttpLoggingInterceptor().apply {
-            this.level = HttpLoggingInterceptor.Level.BASIC
-        }
+    val loggingInterceptor = HttpLoggingInterceptor()
 
     private val okhttpClient = OkHttpClient().newBuilder()
         .addInterceptor(loggingInterceptor)

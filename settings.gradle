@@ -7,8 +7,6 @@ dependencyResolutionManagement {
         //jcenter() // Warning: this repository is going to shut down soon
     }
 }
-//rootProject.name = "PushLibrary"
-//include ':app'
+
 include ':pushreceiver'
-include ':myunity'
-include ':myunitytestapp'
+include ':mysstt'

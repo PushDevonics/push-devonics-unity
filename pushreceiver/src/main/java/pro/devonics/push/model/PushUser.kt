@@ -28,4 +28,8 @@ data class PushUser(
     fun getRegistrationId(): String {
         return registrationId
     }
+
+    fun getAppId(): String {
+        return appId
+    }
 }

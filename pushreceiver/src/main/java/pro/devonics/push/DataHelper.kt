@@ -11,9 +11,6 @@ class DataHelper {
         private var startTime: Long = 0
         private var stopTime: Long = 0
 
-        private val cache = PushCache()
-        val registrationId = cache.getRegistrationId()
-
         fun getDuration(): Long {
             val date = Calendar.getInstance().timeInMillis
             stopTime = date
